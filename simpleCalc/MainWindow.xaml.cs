@@ -21,6 +21,7 @@ namespace simpleCalc
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private ObservableCollection<Product> products => Product.GetProducts().ToObservableCollection();
         public ObservableCollection<Product> Products { get; set; }
 
         public ObservableCollection<Product> basket;
@@ -35,7 +36,7 @@ namespace simpleCalc
             InitializeComponent();
             this.DataContext = this;
 
-            Products = Product.GetProducts().ToObservableCollection();
+            Products = products;
             basket = new ObservableCollection<Product>();
 
         }
@@ -83,6 +84,25 @@ namespace simpleCalc
 
             OnPropertyChanged(nameof(Total));
             OnPropertyChanged(nameof(BasketView));
+        }
+
+        private void searchFromShop(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(searchBox.Text))
+            {
+                Products = products.Where(x => x.Name.ToLower().Contains(searchBox.Text.ToLower())).ToObservableCollection();
+            }
+            else
+            {
+                Products = products;
+            }
+
+            OnPropertyChanged(nameof(Products));
+        }
+
+        private void selectProductType(object sender, SelectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
