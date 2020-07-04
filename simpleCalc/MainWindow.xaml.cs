@@ -25,7 +25,10 @@ namespace simpleCalc
         public ObservableCollection<Product> Products { get; set; }
 
         public ObservableCollection<Product> basket;
-        public ObservableCollection<BasketView> BasketView => basket.GroupBy(x => new { x.Code, x.Name, x.Price }).Select(x => new BasketView { Code = x.Key.Code, Name = x.Key.Name, Price = x.Key.Price, Count = x.Count(), Total = x.Sum(s => s.Price) }).ToObservableCollection();
+        public ObservableCollection<BasketView> BasketView => basket
+            .GroupBy(x => new { x.Code, x.Name, x.Price })
+            .Select(x => new BasketView { Code = x.Key.Code, Name = x.Key.Name, Price = x.Key.Price, Count = x.Count(), Total = x.Sum(s => s.Price) })
+            .ToObservableCollection();
 
 
 
@@ -67,7 +70,9 @@ namespace simpleCalc
             if (item != null)
             {
 
-                var product = basket.Where(x => x.Code == item.Code).First();
+                var product = basket
+                    .Where(x => x.Code == item.Code)
+                    .First();
 
                 basket.Remove(product);
 
@@ -90,7 +95,10 @@ namespace simpleCalc
         {
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
-                Products = products.Where(x => x.Name.ToLower().Contains(searchBox.Text.ToLower())).ToObservableCollection();
+                Products = products
+                    .Where(x => x.Name.ToLower()
+                    .Contains(searchBox.Text.ToLower()))
+                    .ToObservableCollection();
             }
             else
             {
